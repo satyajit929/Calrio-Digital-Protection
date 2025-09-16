@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SatyaLens - Digital Protection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366F2',
+                        secondary: '#8B5CF8',
+                        accent: '#EC4899',
+                        success: '#10B981',
+                        danger: '#EF4444',
+                        warning: '#F59E0B'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 min-h-screen">
+    <!-- Login Page -->
+    <div id="loginPage" class="min-h-screen flex items-center justify-center p-4">
+        <div class="bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl p-8 w-full max-w-md border border-white/20">
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-white text-3xl">🛡️</span>
+                </div>
+                <h1 class="text-3xl font-bold text-white mb-2">SatyaLens</h1>
+                <h1 class="text-3xl font-bold text-white mb-2">सत्यालेन्स</h1>
+                <p class="text-gray-100">Digital Protection</p>
+            </div>
+            
+            <form onsubmit="handleLogin(event)" class="space-y-6">
+                <div>
+                    <label class="block text-white text-sm font-medium mb-2">Full Name</label>
+                    <input 
+                        type="text" 
+                        id="userName"
+                        required
+                        class="w-full p-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-primary backdrop-blur-sm"
+                        placeholder="Enter your full name"
+                    >
+                </div>
+                
+                <div>
+                    <label class="block text-white text-sm font-medium mb-2">Mobile Number</label>
+                    <input 
+                        type="tel" 
+                        id="userMobile"
+                        required
+                        pattern="[0-9]{10}"
+                        class="w-full p-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-primary backdrop-blur-sm"
+                        placeholder="Enter 10-digit mobile number"
+                    >
+                </div>
+                
+                <div>
+                    <label class="block text-white text-sm font-medium mb-2">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="userEmail"
+                        required
+                        class="w-full p-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-primary backdrop-blur-sm"
+                        placeholder="Enter your email address"
+                    >
+                </div>
+                
+                <div class="flex items-start space-x-3">
+                    <input 
+                        type="checkbox" 
+                        id="termsAccept"
+                        required
+                        class="mt-1 w-4 h-4 text-primary bg-transparent border-white/20 rounded focus:ring-primary"
+                    >
+                    <label class="text-sm text-gray-100">
+                        I agree to the <button type="button" onclick="showTerms()" class="text-primary underline">Terms & Conditions</button> and <button type="button" onclick="showPrivacy()" class="text-primary underline">Privacy Policy</button>
+                    </label>
+                </div>
+                
+                <button 
+                    type="submit"
+                    class="w-full bg-gradient-to-r from-primary to-secondary text-white py-4 rounded-xl font-semibold hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 transform hover:scale-105"
+                >
+                    Start Protection
+                </button>
+                <div class="mt-6 text-center">
+                <p class="text-xs text-gray-100">
+                    Protect yourself from fraud calls, fake messages, and misinformation
+                </p>
+            </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboardPage" class="hidden min-h-screen">
+        <!-- Header -->
+        <header class="bg-white/10 backdrop-blur-lg border-b border-white/20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-xl">🛡️</span>
+                        </div>
+                        <span class="ml-3 text-2xl font-bold text-white">SatyaLens</span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <span class="text-white" id="welcomeUser">Welcome!</span>
+                        <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors">
+                            Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="bg-white/5 backdrop-blur-sm border-b border-white/10">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex space-x-8">
+                    <button onclick="showTab('dashboard')" class="tab-btn active py-4 px-2 text-white border-b-2 border-primary font-medium">
+                        Dashboard
+                    </button>
+                    <button onclick="showTab('apps')" class="tab-btn py-4 px-2 text-gray-300 border-b-2 border-transparent hover:text-white font-medium">
+                        Protected Apps
+                    </button>
+                    <button onclick="showTab('history')" class="tab-btn py-4 px-2 text-gray-300 border-b-2 border-transparent hover:text-white font-medium">
+                        History
+                    </button>
+                    <button onclick="showTab('settings')" class="tab-btn py-4 px-2 text-gray-300 border-b-2 border-transparent hover:text-white font-medium">
+                        Settings
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboardTab" class="tab-content max-w-7xl mx-auto px-4 py-8">
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center">
+                            <span class="text-2xl">✅</span>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-gray-100 text-sm">Protected Today</p>
+                            <p class="text-white text-2xl font-bold" id="protectedCount">247</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-red-500/20 rounded-xl flex items-center justify-center">
+                            <span class="text-2xl">🚫</span>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-gray-100 text-sm">Threats Blocked</p>
+                            <p class="text-white text-2xl font-bold" id="blockedCount">23</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-yellow-500/20 rounded-xl flex items-center justify-center">
+                            <span class="text-2xl">⚠️</span>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-gray-100 text-sm">Suspicious Items</p>
+                            <p class="text-white text-2xl font-bold" id="suspiciousCount">8</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
+                            <span class="text-2xl">📱</span>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-gray-100 text-sm">Apps Protected</p>
+                            <p class="text-white text-2xl font-bold" id="appsCount">5</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                <h3 class="text-xl font-bold text-white mb-6">Recent Protection Activity</h3>
+                <div class="space-y-4" id="recentActivity">
+                    <!-- Activity items will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Protected Apps Tab -->
+        <div id="appsTab" class="tab-content hidden max-w-7xl mx-auto px-4 py-8">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-white mb-4">Connect Your Apps for Protection</h2>
+                <p class="text-gray-300">Enable SatyaLens protection for your favorite apps to block fraud calls, messages, images, audio, video, and URLs.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- WhatsApp -->
+                <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.63"/>
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-white font-semibold">WhatsApp</h3>
+                                <p class="text-gray-100 text-sm">Message & Media Protection</p>
+                            </div>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" class="sr-only peer" onchange="toggleAppProtection('whatsapp', this)">
+                            <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                        </label>
+                    </div>
+                    <div class="text-gray-100 text-sm">
+                        <p>Protects against:</p>
+                        <ul class="mt-2 space-y-1">
+                            <li>• Fraud messages</li>
+                            <li>• Malicious images/videos</li>
+                            <li>• Suspicious voice notes</li>
+                            <li>• Phishing URLs</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Phone -->
+                <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-white font-semibold">Phone</h3>
+                                <p class="text-gray-100 text-sm">Call Protection</p>
+                            </div>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" class="sr-only peer" onchange="toggleAppProtection('phone', this)">
+                            <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                        </label>
+                    </div>
+                    <div class="text-gray-100 text-sm">
+                        <p>Protects against:</p>
+                        <ul class="mt-2 space-y-1">
+                            <li>• Spam calls</li>
+                            <li>• Fraud calls</li>
+                            <li>• Robocalls</li>
+                            <li>• Unknown numbers</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- SMS -->
+                <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-white font-semibold">Messages</h3>
+                                <p class="text-gray-100 text-sm">SMS Protection</p>
+                            </div>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" class="sr-only peer" onchange="toggleAppProtection('sms', this)">
+                            <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                        </label>
+                    </div>
+                    <div class="text-gray-100 text-sm">
+                        <p>Protects against:</p>
+                        <ul class="mt-2 space-y-1">
+                            <li>• Spam SMS</li>
+                            <li>• Phishing messages</li>
+                            <li>• OTP fraud</li>
+                            <li>• Malicious links</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-red-500 rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-white font-semibold">Email</h3>
+                                <p class="text-gray-100 text-sm">Email Protection</p>
+                            </div>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" class="sr-only peer" onchange="toggleAppProtection('email', this)">
+                            <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                        </label>
+                    </div>
+                    <div class="text-gray-300 text-sm">
+                        <p>Protects against:</p>
+                        <ul class="mt-2 space-y-1">
+                            <li>• Phishing emails</li>
+                            <li>• Malicious attachments</li>
+                            <li>• Spam emails</li>
+                            <li>• Suspicious links</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Telegram -->
+                <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-cyan-500 rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-white font-semibold">Telegram</h3>
+                                <p class="text-gray-300 text-sm">Message Protection</p>
+                            </div>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" class="sr-only peer" onchange="toggleAppProtection('telegram', this)">
+                            <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                        </label>
+                    </div>
+                    <div class="text-gray-300 text-sm">
+                        <p>Protects against:</p>
+                        <ul class="mt-2 space-y-1">
+                            <li>• Spam messages</li>
+                            <li>• Malicious bots</li>
+                            <li>• Suspicious files</li>
+                            <li>• Phishing links</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Instagram -->
+                <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-white font-semibold">Instagram</h3>
+                                <p class="text-gray-300 text-sm">Social Media Protection</p>
+                            </div>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" class="sr-only peer" onchange="toggleAppProtection('instagram', this)">
+                            <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                        </label>
+                    </div>
+                    <div class="text-gray-300 text-sm">
+                        <p>Protects against:</p>
+                        <ul class="mt-2 space-y-1">
+                            <li>• Fake accounts</li>
+                            <li>• Malicious DMs</li>
+                            <li>• Suspicious links</li>
+                            <li>• Scam posts</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Tab -->
+        <div id="historyTab" class="tab-content hidden max-w-7xl mx-auto px-4 py-8">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-white mb-4">Protection History</h2>
+                <div class="flex space-x-4">
+                    <button onclick="filterHistory('all')" class="filter-btn active bg-primary text-white px-4 py-2 rounded-lg">All</button>
+                    <button onclick="filterHistory('blocked')" class="filter-btn bg-white/10 text-gray-300 px-4 py-2 rounded-lg">Blocked</button>
+                    <button onclick="filterHistory('safe')" class="filter-btn bg-white/10 text-gray-300 px-4 py-2 rounded-lg">Safe</button>
+                    <button onclick="filterHistory('suspicious')" class="filter-btn bg-white/10 text-gray-300 px-4 py-2 rounded-lg">Suspicious</button>
+                </div>
+            </div>
+
+            <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                <div class="space-y-4" id="historyList">
+                    <!-- History items will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div id="settingsTab" class="tab-content hidden max-w-7xl mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                    <h3 class="text-xl font-bold text-white mb-4">Protection Settings</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-white font-medium">Real-time Protection</p>
+                                <p class="text-gray-100 text-sm">Enable continuous monitoring</p>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                            </label>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-white font-medium">Auto Block</p>
+                                <p class="text-gray-100 text-sm">Automatically block detected threats</p>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                            </label>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-white font-medium">Notifications</p>
+                                <p class="text-gray-300 text-sm">Get alerts for threats</p>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                    <h3 class="text-xl font-bold text-white mb-4">Account Information</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <p class="text-gray-100 text-sm">Name</p>
+                            <p class="text-white font-medium" id="settingsName">-</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-100 text-sm">Mobile</p>
+                            <p class="text-white font-medium" id="settingsMobile">-</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-100 text-sm">Email</p>
+                            <p class="text-white font-medium" id="settingsEmail">-</p>
+                        </div>
+                        <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
+                            Edit Profile
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms & Conditions Modal -->
+    <div id="termsModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto border border-white/20">
+            <h2 class="text-2xl font-bold text-white mb-4">Terms & Conditions</h2>
+            <div class="text-gray-100 space-y-4 text-sm">
+                <p><strong>1. Acceptance of Terms</strong><br>
+                By using SatyaLens, you agree to these terms and conditions.</p>
+                
+                <p><strong>2. Service Description</strong><br>
+                SatyaLens provides AI-powered protection against digital fraud, including malicious calls, messages, images, audio, video, and URLs.</p>
+                
+                <p><strong>3. Data Collection & Privacy</strong><br>
+                We collect minimal data necessary for protection services. Your personal information is encrypted and never shared with third parties.</p>
+                
+                <p><strong>4. User Responsibilities</strong><br>
+                Users must provide accurate information and use the service responsibly. Do not attempt to bypass security measures.</p>
+                
+                <p><strong>5. Limitation of Liability</strong><br>
+                SatyaLens provides protection services but cannot guarantee 100% detection of all threats. Users should exercise caution.</p>
+                
+                <p><strong>6. Service Availability</strong><br>
+                We strive for 99.9% uptime but cannot guarantee uninterrupted service due to maintenance or technical issues.</p>
+                
+                <p><strong>7. Termination</strong><br>
+                Either party may terminate the service at any time. Data will be securely deleted upon termination.</p>
+            </div>
+            <button onclick="closeModal('termsModal')" class="mt-6 bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <!-- Privacy Policy Modal -->
+    <div id="privacyModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto border border-white/20">
+            <h2 class="text-2xl font-bold text-white mb-4">Privacy Policy</h2>
+            <div class="text-gray-100 space-y-4 text-sm">
+                <p><strong>Information We Collect</strong><br>
+                - Name, mobile number, and email for account creation<br>
+                - App usage data for protection services<br>
+                - Threat detection logs for security analysis</p>
+                
+                <p><strong>How We Use Information</strong><br>
+                - Provide fraud protection services<br>
+                - Improve threat detection algorithms<br>
+                - Send security alerts and notifications</p>
+                
+                <p><strong>Data Security</strong><br>
+                All data is encrypted using AES-256 encryption. We use secure servers and follow industry best practices.</p>
+                
+                <p><strong>Data Sharing</strong><br>
+                We never sell or share your personal data with third parties. Anonymous threat data may be shared for research.</p>
+                
+                <p><strong>Data Retention</strong><br>
+                Account data is retained while your account is active. Logs are kept for 90 days for security purposes.</p>
+                
+                <p><strong>Your Rights</strong><br>
+                You can access, update, or delete your data at any time through the app settings.</p>
+            </div>
+            <button onclick="closeModal('privacyModal')" class="mt-6 bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // ===== API CONFIGURATION =====
+        const API_BASE_URL = 'http://localhost:8000/api';
+        let userData = null;
+        let protectedApps = [];
+        let protectionHistory = [];
+
+        // ===== BACKEND API COMMANDS =====
+        /*
+        User Registration:
+        curl -X POST http://localhost:8000/api/auth/register \
+          -H "Content-Type: application/json" \
+          -d '{"name": "John Doe", "mobile": "9876543210", "email": "john@example.com"}'
+
+        App Protection Toggle:
+        curl -X POST http://localhost:8000/api/protection/toggle \
+          -H "Content-Type: application/json" \
+          -H "Authorization: Bearer USER_TOKEN" \
+          -d '{"app": "whatsapp", "enabled": true}'
+
+        Threat Analysis:
+        curl -X POST http://localhost:8000/api/protection/analyze \
+          -H "Content-Type: application/json" \
+          -H "Authorization: Bearer USER_TOKEN" \
+          -d '{"type": "message", "content": "CONTENT_HERE", "app": "whatsapp"}'
+
+        Get Protection History:
+        curl -X GET http://localhost:8000/api/protection/history \
+          -H "Authorization: Bearer USER_TOKEN"
+
+        Real-time WebSocket:
+        wscat -c ws://localhost:8000/ws/protection/USER_ID
+        */
+
+        // Login handling
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('userName').value;
+            const mobile = document.getElementById('userMobile').value;
+            const email = document.getElementById('userEmail').value;
+            
+            // Store user data
+            userData = { name, mobile, email };
+            localStorage.setItem('satyalens_user', JSON.stringify(userData));
+            
+            // API Call: Register user
+            registerUser(userData);
+            
+            // Show dashboard
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('dashboardPage').classList.remove('hidden');
+            
+            // Update welcome message
+            document.getElementById('welcomeUser').textContent = `Welcome, ${name}!`;
+            
+            // Update settings
+            document.getElementById('settingsName').textContent = name;
+            document.getElementById('settingsMobile').textContent = mobile;
+            document.getElementById('settingsEmail').textContent = email;
+            
+            // Initialize dashboard
+            initializeDashboard();
+        }
+
+        async function registerUser(userData) {
+            try {
+                console.log('🔐 Registering user...');
+                const response = await fetch(`${API_BASE_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log('✅ User registered:', result);
+                    localStorage.setItem('auth_token', result.token);
+                } else {
+                    console.log('❌ Registration failed');
+                }
+            } catch (error) {
+                console.log('🔄 Using offline mode - registration will sync later');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('satyalens_user');
+            localStorage.removeItem('auth_token');
+            location.reload();
+        }
+
+        // Tab navigation
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active', 'border-primary', 'text-white');
+                btn.classList.add('border-transparent', 'text-gray-300');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + 'Tab').classList.remove('hidden');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active', 'border-primary', 'text-white');
+            event.target.classList.remove('border-transparent', 'text-gray-100');
+        }
+
+        // App protection toggle
+        async function toggleAppProtection(appName, checkbox) {
+            const enabled = checkbox.checked;
+            
+            try {
+                console.log(`🛡️ Toggling ${appName} protection: ${enabled}`);
+                const response = await fetch(`${API_BASE_URL}/protection/toggle`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
+                    },
+                    body: JSON.stringify({
+                        app: appName,
+                        enabled: enabled
+                    })
+                });
+                
+                if (response.ok) {
+                    console.log(`✅ ${appName} protection ${enabled ? 'enabled' : 'disabled'}`);
+                } else {
+                    console.log(`❌ Failed to toggle ${appName} protection`);
+                }
+            } catch (error) {
+                console.log(`🔄 ${appName} protection will sync when online`);
+            }
+            
+            // Update local state
+            if (enabled) {
+                if (!protectedApps.includes(appName)) {
+                    protectedApps.push(appName);
+                }
+            } else {
+                protectedApps = protectedApps.filter(app => app !== appName);
+            }
+            
+            updateAppsCount();
+            showToast(`${appName.charAt(0).toUpperCase() + appName.slice(1)} protection ${enabled ? 'enabled' : 'disabled'}`, enabled ? 'success' : 'info');
+        }
+
+        // History filtering
+        function filterHistory(filter) {
+            // Update filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-primary', 'text-white');
+                btn.classList.add('bg-white/10', 'text-gray-300');
+            });
+            
+            event.target.classList.add('active', 'bg-primary', 'text-white');
+            event.target.classList.remove('bg-white/10', 'text-gray-100');
+            
+            // Filter and display history
+            displayHistory(filter);
+        }
+
+        function displayHistory(filter = 'all') {
+            const historyList = document.getElementById('historyList');
+            let filteredHistory = protectionHistory;
+            
+            if (filter !== 'all') {
+                filteredHistory = protectionHistory.filter(item => item.status === filter);
+            }
+            
+            if (filteredHistory.length === 0) {
+                historyList.innerHTML = `
+                    <div class="text-center py-8">
+                        <span class="text-4xl mb-2 block">📋</span>
+                        <p class="text-gray-300">No ${filter === 'all' ? '' : filter + ' '}items found</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            historyList.innerHTML = filteredHistory.map(item => `
+                <div class="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/10">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-10 h-10 ${getStatusColor(item.status)} rounded-lg flex items-center justify-center">
+                            <span class="text-xl">${getStatusIcon(item.status)}</span>
+                        </div>
+                        <div>
+                            <p class="text-white font-medium">${item.title}</p>
+                            <p class="text-gray-300 text-sm">${item.app} • ${item.time}</p>
+                            <p class="text-gray-400 text-xs">${item.content}</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="px-3 py-1 ${getStatusBadgeColor(item.status)} rounded-full text-sm font-medium">
+                            ${item.status.charAt(0).toUpperCase() + item.status.slice(1)}
+                        </span>
+                        <p class="text-gray-400 text-xs mt-1">${item.type}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getStatusColor(status) {
+            switch(status) {
+                case 'blocked': return 'bg-red-500/20';
+                case 'safe': return 'bg-green-500/20';
+                case 'suspicious': return 'bg-yellow-500/20';
+                default: return 'bg-gray-500/20';
+            }
+        }
+
+        function getStatusIcon(status) {
+            switch(status) {
+                case 'blocked': return '🚫';
+                case 'safe': return '✅';
+                case 'suspicious': return '⚠️';
+                default: return '📄';
+            }
+        }
+
+        function getStatusBadgeColor(status) {
+            switch(status) {
+                case 'blocked': return 'bg-red-500 text-white';
+                case 'safe': return 'bg-green-500 text-white';
+                case 'suspicious': return 'bg-yellow-500 text-white';
+                default: return 'bg-gray-500 text-white';
+            }
+        }
+
+        // Modal functions
+        function showTerms() {
+            document.getElementById('termsModal').classList.remove('hidden');
+        }
+
+        function showPrivacy() {
+            document.getElementById('privacyModal').classList.remove('hidden');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        // Toast notifications
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            const colors = {
+                success: 'bg-green-500',
+                danger: 'bg-red-500',
+                warning: 'bg-yellow-500',
+                info: 'bg-blue-500'
+            };
+            
+            toast.className = `${colors[type]} text-white px-6 py-3 rounded-lg shadow-lg transform transition-all duration-300 translate-x-full opacity-0 mb-2`;
+            toast.textContent = message;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.remove('translate-x-full', 'opacity-0');
+            }, 100);
+            
+            setTimeout(() => {
+                toast.classList.add('translate-x-full', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        // Initialize dashboard
+        function initializeDashboard() {
+            // Generate sample history
+            protectionHistory = [
+                {
+                    title: 'Phishing message blocked',
+                    app: 'WhatsApp',
+                    type: 'Message',
+                    content: 'Urgent! Your bank account will be suspended...',
+                    status: 'blocked',
+                    time: '2 minutes ago'
+                },
+                {
+                    title: 'Spam call blocked',
+                    app: 'Phone',
+                    type: 'Call',
+                    content: '+91-9876543210',
+                    status: 'blocked',
+                    time: '15 minutes ago'
+                },
+                {
+                    title: 'Safe message verified',
+                    app: 'SMS',
+                    type: 'Message',
+                    content: 'Your OTP is 123456',
+                    status: 'safe',
+                    time: '1 hour ago'
+                },
+                {
+                    title: 'Suspicious URL flagged',
+                    app: 'Email',
+                    type: 'URL',
+                    content: 'https://fake-bank.com',
+                    status: 'suspicious',
+                    time: '2 hours ago'
+                },
+                {
+                    title: 'Malicious image blocked',
+                    app: 'Telegram',
+                    type: 'Image',
+                    content: 'suspicious_image.jpg',
+                    status: 'blocked',
+                    time: '3 hours ago'
+                }
+            ];
+            
+            // Update recent activity
+            updateRecentActivity();
+            displayHistory();
+            updateStats();
+        }
+
+        function updateRecentActivity() {
+            const recentActivity = document.getElementById('recentActivity');
+            const recent = protectionHistory.slice(0, 3);
+            
+            recentActivity.innerHTML = recent.map(item => `
+                <div class="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/10">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 ${getStatusColor(item.status)} rounded-lg flex items-center justify-center">
+                            <span class="text-xl">${getStatusIcon(item.status)}</span>
+                        </div>
+                        <div>
+                            <p class="text-white font-medium">${item.title}</p>
+                            <p class="text-gray-300 text-sm">${item.app} • ${item.time}</p>
+                        </div>
+                    </div>
+                    <span class="px-3 py-1 ${getStatusBadgeColor(item.status)} rounded-full text-sm font-medium">
+                        ${item.status.charAt(0).toUpperCase() + item.status.slice(1)}
+                    </span>
+                </div>
+            `).join('');
+        }
+
+        function updateStats() {
+            const blocked = protectionHistory.filter(item => item.status === 'blocked').length;
+            const suspicious = protectionHistory.filter(item => item.status === 'suspicious').length;
+            const total = protectionHistory.length;
+            
+            document.getElementById('protectedCount').textContent = total;
+            document.getElementById('blockedCount').textContent = blocked;
+            document.getElementById('suspiciousCount').textContent = suspicious;
+        }
+
+        function updateAppsCount() {
+            document.getElementById('appsCount').textContent = protectedApps.length;
+        }
+
+        // Check for existing user on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedUser = localStorage.getItem('satyalens_user');
+            if (savedUser) {
+                userData = JSON.parse(savedUser);
+                document.getElementById('loginPage').classList.add('hidden');
+                document.getElementById('dashboardPage').classList.remove('hidden');
+                document.getElementById('welcomeUser').textContent = `Welcome, ${userData.name}!`;
+                document.getElementById('settingsName').textContent = userData.name;
+                document.getElementById('settingsMobile').textContent = userData.mobile;
+                document.getElementById('settingsEmail').textContent = userData.email;
+                initializeDashboard();
+            }
+        });
+
+        // Close modals when clicking outside
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('fixed')) {
+                const modals = ['termsModal', 'privacyModal'];
+                modals.forEach(modalId => {
+                    if (event.target.id === modalId) {
+                        closeModal(modalId);
+                    }
+                });
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97f16a0fb6d5dccb',t:'MTc1Nzg2ODk1MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
